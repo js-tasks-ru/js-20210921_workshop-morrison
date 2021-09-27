@@ -4,6 +4,22 @@
  * @param {...string} fields - the properties paths to pick
  * @returns {object} - returns the new object
  */
-export const pick = (obj, ...fields) => {
+// export const pick = (obj, ...fields) => {
 
+// };
+
+pick = (obj, ...fields) => {
+  return fields in obj;
+
+  // return Object.values(obj);
+  // return Object.keys(obj);
+  //   return Object.entries(obj);
 };
+
+const fruits = {
+  apple: 2,
+  orange: 4,
+  banana: 3,
+};
+
+console.log(pick(fruits, "apple"));
