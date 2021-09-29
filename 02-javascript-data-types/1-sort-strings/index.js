@@ -7,22 +7,25 @@
 
 export function sortStrings(arr, param = "asc") {
   const sortedArr = [...arr];
-  if (param === "asc") {
-    sortedArr.sort(function (a, b) {
-      return a.localeCompare(b, "kf", {
-        caseFirst: "upper",
-      });
+
+  function compareStrings(a, b) {
+    const caseParams = {
+      asc: "upper",
+      desc: "lower",
+    };
+
+    const caseStrings = caseParams[param];
+
+    return a.localeCompare(b, ["ru", "en"], {
+      caseFirst: caseStrings,
     });
-  } else if (param === "desc") {
-    sortedArr
-      .sort(function (a, b) {
-        return a.localeCompare(b, "kf", {
-          caseFirst: "lower",
-        });
-      })
-      .reverse();
-  } else {
-    return;
+  }
+
+  if (param === "asc") {
+    sortedArr.sort(compareStrings);
+  }
+  if (param === "desc") {
+    sortedArr.sort(compareStrings).reverse();
   }
   return sortedArr;
 }
