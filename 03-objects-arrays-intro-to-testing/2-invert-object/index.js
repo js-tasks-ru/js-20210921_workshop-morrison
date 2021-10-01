@@ -5,8 +5,9 @@
  */
 export function invertObj(obj) {
     const invertedMap = new Map();
+    if (!obj) return;
     for (const [obj1, obj2] of Object.entries(obj)) {
         invertedMap.set(obj2, obj1);
     }
-    return Object.fromEntries(invertedMap);
+    return Object.fromEntries(invertedMap.entries());
 }
