@@ -1,15 +1,21 @@
+
 export default class ColumnChart {
+
+
   constructor({ data = [], label = '', link = '', value = 0 }) {
     this.data = data;
     this.label = label;
     this.link = link;
     this.value = value;
-
     this.render();
+    this.initEventListeners();
+    this.chartPercent;
+    this.chartValue;
 
-    // tmp
-    this.getChartsValues();
   }
+  // get chartColumns() {
+  //   return this.getColumnProps(this.data);
+  // }
 
   getColumnProps(data) {
     const maxValue = Math.max(...data);
@@ -21,26 +27,21 @@ export default class ColumnChart {
         value: String(Math.floor(item * scale))
       };
     });
-
-  }
-
-  getChartsValues() {
-    const newData = Object.assign({}, ...this.getColumnProps(this.data));
-    console.log(newData);
   }
 
   getChartsTemplate() {
 
+    const chartsProps = this.getColumnProps(this.data);
 
-    return `
-    <div class="column-chart__container">
-      <div data-element="header" class="column-chart__header">${this.value}</div>
-      <div data-element="body" class="column-chart__chart">
-      <div style="--value: 6" data-tooltip="1%"></div>
-    </div>
-    </div>
-  `
+    if (!chartsProps) return;
+
+    for (const entry of chartsProps) {
+      this.chartPercent = entry.percent;
+      this.chartValue = entry.value;
+    }
+    // <div style="--value: " data-tooltip=""></div>
   }
+
   getTemplate() {
     const link = `<a href="${this.link}" class="column-chart__link">View all</a>`;
     return `
@@ -49,7 +50,12 @@ export default class ColumnChart {
       Total ${this.label}
       ${this.link ? link : ''}
     </div>
-    ${this.getChartsTemplate()}
+    <div class="column-chart__container">
+    <div data-element="header" class="column-chart__header">${this.value}</div>
+    <div data-element="body" class="column-chart__chart">
+
+  </div>
+  </div>
   </div>
   `
   }
@@ -62,5 +68,17 @@ export default class ColumnChart {
     // NOTE: в этой строке мы избавляемся от обертки-пустышки в виде `div`
     // который мы создали на строке (*)
     this.element = element.firstElementChild;
+  }
+  initEventListeners() {
+    // NOTE: в данном методе добавляем обработчики событий, если они есть
+  }
+
+  remove() {
+    this.element.remove();
+  }
+
+  destroy() {
+    this.remove();
+    // NOTE: удаляем обработчики событий, если они есть
   }
 }
